@@ -1,2 +1,3 @@
 Server/package-lock.json
 Server/node-modules/
+.DS_Store
