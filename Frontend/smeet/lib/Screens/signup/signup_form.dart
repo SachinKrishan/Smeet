@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:smeet/Screens/login/login_screen.dart';
+import '/Screens/login/login_screen.dart';
 
 class User {
   String email;

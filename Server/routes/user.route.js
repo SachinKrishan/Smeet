@@ -4,6 +4,7 @@ const router = express.Router()
 
 
 router.post('/signup', async (req, res) => {
+    console.log(req.body);
     try {
         const existingUser = await User.findOne({ email: req.body.email });
         
@@ -12,10 +13,14 @@ router.post('/signup', async (req, res) => {
         }
 
         const newUser = new User({
+            fullName: req.body.name,
             email: req.body.email,
+            linkedin: req.body.email,
+            availability: req.body.availability,
             password: req.body.password
         });
 
+        console.log(newUser);
         await newUser.save();
         res.json(newUser);
     } catch (error) {
@@ -36,14 +41,21 @@ router.post('/signin', async (req,res)=>{
             console.log(validUser)
             return res.json({ message: 'user not found or invalid password', user: validUser });
         }
-
-    // User.findOne({email:req.body.email,password:req.body.password},(err,user)=>{
-    //     if(err){
-    //         console.log(err)
-    //         res.json(err)
-    //     }else{
-    //         res.json(user)   
-    //     }
-    // })
 })
+
+router.get('/search', async (req, res) => {
+    const searchTerm = req.query.q; // Get the search term from query parameter
+    try {
+        console.log("api called with ", searchTerm)
+        const employees = await User.find({
+        name: { $regex: searchTerm, $options: 'i' }, // Case-insensitive search
+      }, { name : 1, email : 1 });
+      res.json(employees);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+
+
 module.exports = router

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'Screens/login/login_screen.dart';
-//import 'package:smeet/Screens/home/home_scree.dart';
+import 'package:smeet/Screens/home/home_scree.dart';
 import '/Screens/createMeeting/create_screen.dart';
 import 'constants.dart';
 
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-      home: CreateScreen()
+      home: HomeScreen()
     );
   }
 }

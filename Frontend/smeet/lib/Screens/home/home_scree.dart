@@ -3,33 +3,13 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:smeet/Screens/bottom_navbar.dart';
 
-class Example extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _ExampleState createState() => _ExampleState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _ExampleState extends State<Example> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Likes',
-      style: optionStyle,
-    ),
-    Text(
-      'Search',
-      style: optionStyle,
-    ),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
-  ];
+class HomeScreenState extends State<HomeScreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +22,9 @@ class _ExampleState extends State<Example> {
         foregroundColor: Colors.black,
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: Text("Home"),
       ),
-      bottomNavigationBar: NavBar()
+      bottomNavigationBar: NavBar(selected: 0,)
     );
   }
 }
