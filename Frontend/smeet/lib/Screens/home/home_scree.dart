@@ -74,6 +74,13 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                 )),
             // List of participants
             Text(widget.meeting["participants"][1]),
+            // error here
+            // ListView.builder(
+            //   itemCount: 50,
+            //   itemBuilder: (_, i) {
+            //     return Text(widget.meeting["participants"][i]);
+            //   },
+            // ),
           ]),
         ),
       ),
@@ -316,12 +323,11 @@ class HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             print("tapped");
                             showDialog(
-                            context: context,
-                            builder: (BuildContext context)
-                            {
-                              return CustomDialogBox(meeting: groupItems[innerIndex]);
-                            }
-                            );
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CustomDialogBox(
+                                      meeting: groupItems[innerIndex]);
+                                });
                           },
                           child: Card(
                             elevation: 4,
