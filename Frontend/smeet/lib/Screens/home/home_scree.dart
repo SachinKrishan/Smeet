@@ -76,7 +76,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
             Text(widget.meeting["participants"][1]),
             // error here
             // ListView.builder(
-            //   itemCount: 50,
+            //   itemCount: widget.meeting["participants"].length,
             //   itemBuilder: (_, i) {
             //     return Text(widget.meeting["participants"][i]);
             //   },
