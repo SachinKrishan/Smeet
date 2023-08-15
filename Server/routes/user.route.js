@@ -32,6 +32,7 @@ router.post('/signup', async (req, res) => {
 router.post('/signin', async (req,res)=>{
 
     const validUser = await User.findOne({ email:req.body.email,password:req.body.password });
+    console.log(req.body)
         
         if (validUser) {
             console.log(validUser)
@@ -39,7 +40,7 @@ router.post('/signin', async (req,res)=>{
         }
         else{
             console.log(validUser)
-            return res.json({ message: 'user not found or invalid password', user: validUser });
+            return res.status(500).json({ message: 'user not found or invalid password', user: validUser });
         }
 })
 
