@@ -73,14 +73,16 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 )),
             // List of participants
-            Text(widget.meeting["participants"][1]),
-            // error here
-            // ListView.builder(
-            //   itemCount: widget.meeting["participants"].length,
-            //   itemBuilder: (_, i) {
-            //     return Text(widget.meeting["participants"][i]);
-            //   },
-            // ),
+            SizedBox(
+              height: 50,
+              width: double.maxFinite,
+              child: ListView.builder(
+                itemCount: widget.meeting["participants"].length,
+                itemBuilder: (_, i) {
+                  return Text(widget.meeting["participants"][i]);
+                },
+              ),
+            ),
           ]),
         ),
       ),

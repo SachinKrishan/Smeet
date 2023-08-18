@@ -1,45 +1,88 @@
 import 'package:flutter/material.dart';
-import 'Screens/login/login_screen.dart';
-import 'package:smeet/Screens/home/home_scree.dart';
-import '/Screens/createMeeting/create_screen.dart';
-import 'constants.dart';
 
-void main() => runApp(const MyApp());
+import 'screens/loading_screen.dart';
+import 'screens/authentication_screen.dart';
+import 'screens/main_screen.dart';
+import 'services/auth_service.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+void main() {
+  runApp(const SocialAuth());
+}
+
+class SocialAuth extends StatefulWidget {
+  const SocialAuth({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
+  State<SocialAuth> createState() => _SocialAuthState();
+}
+
+class _SocialAuthState extends State<SocialAuth> {
+  bool isProgressing = false;
+  bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    initAuth();
+    super.initState();
+  }
+
+  initAuth() async {
+    setLoadingState();
+    final bool isAuthenticated = await AuthService.instance.initAuth();
+    if (isAuthenticated) {
+      setAuthenticatedState();
+    } else {
+      setUnauthenticatedState();
+    }
+  }
+
+  setLoadingState() {
+    setState(() {
+      isProgressing = true;
+    });
+  }
+
+  setAuthenticatedState() {
+    setState(() {
+      isProgressing = false;
+      isLoggedIn = true;
+    });
+  }
+
+  setUnauthenticatedState() {
+    setState(() {
+      isProgressing = false;
+      isLoggedIn = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Auth',
+      title: 'SocialAuthApp',
       theme: ThemeData(
-          primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: Colors.white,
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: kPrimaryColor,
-              shape: const StadiumBorder(),
-              maximumSize: const Size(double.infinity, 56),
-              minimumSize: const Size(double.infinity, 56),
-            ),
-          ),
-          inputDecorationTheme: const InputDecorationTheme(
-            filled: true,
-            fillColor: kPrimaryLightColor,
-            iconColor: kPrimaryColor,
-            prefixIconColor: kPrimaryColor,
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: defaultPadding, vertical: defaultPadding),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              borderSide: BorderSide.none,
-            ),
-          )),
-      home: HomeScreen()
+        primarySwatch: Colors.blue,
+      ),
+      home: SafeArea(
+        child: Builder(
+          builder: (context) {
+            if (isProgressing) {
+              return const LoadingScreen();
+            } else if (isLoggedIn) {
+              return MainScreen(
+                setUnauthenticatedState: setUnauthenticatedState,
+              );
+            } else {
+              return AuthenticationScreen(
+                setLoadingState: setLoadingState,
+                setAuthenticatedState: setAuthenticatedState,
+                setUnauthenticatedState: setUnauthenticatedState,
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }
