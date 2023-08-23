@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '/Screens/login/login_screen.dart';
+import 'package:smeet/Screens/home/home_scree.dart';
 
 class User {
   String email;
@@ -36,7 +37,7 @@ class SignUpFormWidget extends StatelessWidget {
 
     print(res.body);
     Navigator.push(
-        context, new MaterialPageRoute(builder: (context) => LoginScreen()));
+        context, new MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   User user = User('', '');

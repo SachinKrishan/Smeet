@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "615555536851",
+    "project_id": "smeet2-c7468",
+    "storage_bucket": "smeet2-c7468.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615555536851:android:bea3246cb9a57017ac8126",
+        "android_client_info": {
+          "package_name": "com.example.smeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615555536851-17k24gc9ni21449oka1978gplbq8964h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWkx-3MOj5A44kBa645uyEV61V6C8uVH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615555536851-17k24gc9ni21449oka1978gplbq8964h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

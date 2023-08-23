@@ -12,10 +12,10 @@ class Meeting {
   late String description;
   late String mode;
   late String location;
-  late List<String> participants;
-  late String date;
-  late String fromTime;
-  late String toTime;
+  late List<String> participants = [];
+  late String date = "";
+  late String fromTime = "";
+  late String toTime = "";
 
   Meeting();
 }
@@ -34,12 +34,13 @@ class CreateScreenFormState extends State<CreateScreenForm> {
   final toTimeController = TextEditingController();
 
   List<dynamic> searchResults = [];
+  List<dynamic> availability = [];
   List<String> selectedEmployees = [];
   List<String> employees = [];
   Meeting meeting = Meeting();
 
-
   Future save() async {
+    print("here");
     final url = Uri.parse("http://172.20.2.246:8080/createMeeting");
 
     final meetingData = {
@@ -66,6 +67,30 @@ class CreateScreenFormState extends State<CreateScreenForm> {
         context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
+  Future<List<dynamic>> getAvailability() async {
+    print("getAvailability");
+    print(meeting.date);
+    final url = Uri.parse("http://172.20.2.246:8080/getAvailability");
+
+    final meetingData = {
+      "participants": meeting.participants,
+      "date": meeting.date,
+    };
+
+    final res = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(meetingData), // Convert your data to JSON
+    );
+
+    //print(res.body);
+    final responseBody = json.decode(res.body);
+    availability = await responseBody["availability"];
+    return responseBody;
+  }
+
   Future<void> _searchEmployees(String query) async {
     print("api called");
     final response =
@@ -83,18 +108,63 @@ class CreateScreenFormState extends State<CreateScreenForm> {
     print(employees);
   }
 
+  bool isTimeWithinBlocks() {
+    final now = DateTime.now();
+
+    for (var block in availability) {
+
+      final startDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        int.parse(block[0].split(":")[0]),
+          int.parse(block[0].split(":")[1])
+      );
+
+      final endDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        int.parse(block[1].split(":")[0]),
+        int.parse(block[1].split(":")[1]),
+      );
+
+      final selectedStartDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        int.parse(meeting.fromTime.split(" ")[0].split(":")[0]),
+    int.parse(meeting.fromTime.split(" ")[0].split(":")[1])
+      );
+
+      final selectedEndDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+    int.parse(meeting.toTime.split(" ")[0].split(":")[0]),
+    int.parse(meeting.toTime.split(" ")[0].split(":")[1])
+      );
+
+      if (selectedStartDateTime.isAfter(startDateTime) &&
+          selectedEndDateTime.isBefore(endDateTime)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   void initState() {
     super.initState();
     dateController.text = "";
     _searchEmployees("");
-    meeting.mode = 'In-person';
+    meeting.mode = 'In-Person';
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: Form(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -154,7 +224,9 @@ class CreateScreenFormState extends State<CreateScreenForm> {
                   meeting.location = value;
                 },
                 decoration: InputDecoration(
-                    labelText: meeting.mode == "In-person" ? "Location" : "Meet Link", prefixIcon: Icon(Icons.pin_drop)),
+                    labelText:
+                        meeting.mode == "In-person" ? "Location" : "Meet Link",
+                    prefixIcon: Icon(Icons.pin_drop)),
               ),
               const SizedBox(height: 30),
               Expanded(
@@ -172,9 +244,8 @@ class CreateScreenFormState extends State<CreateScreenForm> {
                       },
                       onItemRemoved: (l, s) {
                         meeting.participants.remove(s);
-                      }
+                      }),
                 ),
-              ),
               ),
               const SizedBox(height: 30),
               TextField(
@@ -200,16 +271,24 @@ class CreateScreenFormState extends State<CreateScreenForm> {
 
                     setState(() {
                       dateController.text = formattedDate.toString();
+                      //print(dateController.text);
+                      meeting.date = formattedDate;
+                      getAvailability();
+                      print(availability);
                     });
                   } else {
                     print("Not selected");
                   }
                 },
               ),
+              Wrap(
+                children: availability.map((item) => Chip(label: Text("${item[0]} - ${item[1]}"))).toList(),
+              ),
               const SizedBox(height: 30),
               TextFormField(
                 onChanged: (value) {
                   setState(() {
+                    print(value);
                     meeting.fromTime = value;
                   });
                 },
@@ -225,6 +304,7 @@ class CreateScreenFormState extends State<CreateScreenForm> {
                     setState(() {
                       fromTimeController.text =
                           "${fromTime.hour}:${fromTime.minute}";
+                      meeting.fromTime = "${fromTime.hour}:${fromTime.minute}";
                     });
                   }
                 },
@@ -233,6 +313,7 @@ class CreateScreenFormState extends State<CreateScreenForm> {
               TextFormField(
                 onChanged: (value) {
                   setState(() {
+                    print(value);
                     meeting.toTime = value;
                   });
                 },
@@ -247,6 +328,7 @@ class CreateScreenFormState extends State<CreateScreenForm> {
                   if (toTime != null) {
                     setState(() {
                       toTimeController.text = "${toTime.hour}:${toTime.minute}";
+                      meeting.toTime = "${toTime.hour}:${toTime.minute}";
                     });
                   }
                 },
@@ -256,7 +338,14 @@ class CreateScreenFormState extends State<CreateScreenForm> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    save();
+                    print("before here");
+                    if(isTimeWithinBlocks()){
+                      save();
+                    }
+                    else{
+                      print("not valid times");
+                    }
+
                   },
                   child: Text("Create Meet".toUpperCase()),
                 ),

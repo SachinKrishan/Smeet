@@ -3,6 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'home/home_scree.dart';
 import 'createMeeting/create_screen.dart';
+import 'Profile/profile_screen.dart';
 
 
 class NavBar extends StatefulWidget {
@@ -77,8 +78,8 @@ class NavBarState extends State<NavBar> {
                   break;
                 case 2:
                 // do something else
-                // Navigator.push(
-                //     context, MaterialPageRoute(builder: (context) => CreateMeetingScreen()));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
                   break;
               }
             },

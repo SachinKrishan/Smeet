@@ -3,9 +3,23 @@ import 'login_header.dart';
 import 'login_form.dart';
 import 'login_footer.dart';
 
+class LoginScreen extends StatefulWidget {
+  const LoginScreen(
+      {Key? key,
+        required this.setLoadingState,
+        required this.setAuthenticatedState,
+        required this.setUnauthenticatedState})
+      : super(key: key);
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  final VoidCallback setLoadingState;
+  final VoidCallback setAuthenticatedState;
+  final VoidCallback setUnauthenticatedState;
+
+  @override
+  State<LoginScreen> createState() => LoginScreenState();
+}
+
+class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +33,11 @@ class LoginScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LoginHeaderWidget(),
-                LoginForm(),
+                LoginForm(
+                  setLoadingState: widget.setLoadingState,
+                  setAuthenticatedState:  widget.setAuthenticatedState,
+                  setUnauthenticatedState:  widget.setUnauthenticatedState,
+                ),
                 LoginFooterWidget(),
               ],
             ),

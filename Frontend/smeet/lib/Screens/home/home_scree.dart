@@ -5,6 +5,8 @@ import 'package:line_icons/line_icons.dart';
 import 'package:smeet/Screens/bottom_navbar.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class CustomDialogBox extends StatefulWidget {
   final Map<String, dynamic> meeting;
@@ -99,6 +101,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
 }
 
 class HomeScreen extends StatefulWidget {
+
   @override
   HomeScreenState createState() => HomeScreenState();
 }
@@ -125,106 +128,15 @@ dynamic dialoger() {
 
 _launchURL(String urlString) async {
   if (true) {
-    await launchUrl(Uri.parse(urlString));
+    await launchUrl(Uri.parse(urlString), mode: LaunchMode.externalApplication);
   } else {
     throw 'Could not launch $urlString';
   }
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  final String jsonData = '''
-  [
-  {
-  "date": "2023-07-30T00:00:00.000Z",
-  "meeting": [
-        {
-        "name": "Project Review",
-        "description": "Review of the latest project updates",
-        "mode": "In-Person",
-        "location": "Conference Room A",
-        "participants": [
-            "John",
-            "Alice",
-            "Bob"
-        ],
-        "fromTime": "09:00 AM",
-        "toTime": "11:00 AM",
-        "__v": 0
-        },
-        {
-        "name": "Diff meeting",
-        "description": "Review of the latest project updates",
-        "mode": "Remote",
-        "location": "https://www.youtube.com/",
-        "participants": [
-            "John",
-            "Alice",
-            "Bob"
-        ],
-        "fromTime": "09:00 AM",
-        "toTime": "11:00 AM",
-        "__v": 0
-        }
-        
-    ]
-    },
-    
-    {
-  "date": "2024-12-30T00:00:00.000Z",
-  "meeting": [
-        {
-        "name": "Project Review",
-        "description": "Review of the latest project updates",
-        "mode": "In-Person",
-        "location": "Conference Room A",
-        "participants": [
-            "John",
-            "Alice",
-            "Bob"
-        ],
-        "fromTime": "09:00 AM",
-        "toTime": "11:00 AM",
-        "__v": 0
-        }    
-    ]
-    },
-    
-    {
-  "date": "2023-07-30T00:00:00.000Z",
-  "meeting": [
-        {
-        "name": "Project Review",
-        "description": "Review of the latest project updates",
-        "mode": "Remote",
-        "location": "https://www.youtube.com/",
-        "participants": [
-            "John",
-            "Alice",
-            "Bob"
-        ],
-        "fromTime": "09:00 AM",
-        "toTime": "11:00 AM",
-        "__v": 0
-        },
-        {
-        "name": "Diff meeting",
-        "description": "Review of the latest project updates",
-        "mode": "In-Person",
-        "location": "Conference Room A",
-        "participants": [
-            "John",
-            "Alice",
-            "Bob"
-        ],
-        "fromTime": "09:00 AM",
-        "toTime": "11:00 AM",
-        "__v": 0
-        }
-        
-    ]
-    }
-  ]
-  ''';
+  List<dynamic> dates = [];
+  String? user;
 
   String getDayName(int dayOfWeek) {
     switch (dayOfWeek) {
@@ -259,11 +171,63 @@ class HomeScreenState extends State<HomeScreen> {
 // Add more groups here
   ];
 
+
+  Future<List<dynamic>> getMeetings(BuildContext context) async {
+    String searchTerm = "Sachin Krishan";
+    //print(searchTerm);
+    String encodedSearchTerm = Uri.encodeQueryComponent(searchTerm);
+
+    final String apiUrl = "http://172.20.2.246:8080/getMeetings?q=$encodedSearchTerm"; // Replace with your API endpoint
+
+    try {
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        }
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody = json.decode(response.body);
+        //print(responseBody);
+        return responseBody;
+      }
+    } catch (e) {
+      // Network or other errors
+      print('Error occurred: $e');
+      return ["inside error"];
+    }
+
+    return ["empty"];
+  }
+
+  Future<void> initializeMeetings() async {
+    List<dynamic> fetchedDates = await getMeetings(context);
+    setState(() {
+      dates = fetchedDates;
+    });
+  }
+
+  // Future<void> initUser() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? curUser = prefs.getString('userName');
+  //   setState(() {
+  //     user = curUser;
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    //initUser();
+    initializeMeetings();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<dynamic> dates = json.decode(jsonData);
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text('Scheduled Meetings'),

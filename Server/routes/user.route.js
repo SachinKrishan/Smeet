@@ -9,14 +9,13 @@ router.post('/signup', async (req, res) => {
         const existingUser = await User.findOne({ email: req.body.email });
         
         if (existingUser) {
-            return res.json({ message: 'Email is not available' });
+            return res.status(500).json({ message: 'Email is not available' });
         }
 
         const newUser = new User({
-            fullName: req.body.name,
+            name: req.body.name,
             email: req.body.email,
-            linkedin: req.body.email,
-            availability: req.body.availability,
+            phone: req.body.phone,
             password: req.body.password
         });
 
@@ -30,9 +29,8 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/signin', async (req,res)=>{
-
+    console.log(req.body);
     const validUser = await User.findOne({ email:req.body.email,password:req.body.password });
-    console.log(req.body)
         
         if (validUser) {
             console.log(validUser)

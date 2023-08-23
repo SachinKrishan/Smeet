@@ -8,7 +8,7 @@ class FormHeaderWidget extends StatelessWidget {
     required this.image,
     required this.title,
     required this.subTitle,
-    this.imageHeight = 0.2,
+    this.imageHeight = 0.45,
     this.textAlign,
     this.crossAxisAlignment = CrossAxisAlignment.start,
   }) : super(key: key);

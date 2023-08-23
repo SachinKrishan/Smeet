@@ -12,7 +12,7 @@ class LoginHeaderWidget extends StatelessWidget {
       children: [
         Image(
             image: const AssetImage('assets/s.png'),
-            height: size.height * 0.2),
+            height: size.height * 0.28),
         Text("Welcome back", style: Theme.of(context).textTheme.displayMedium),
         Text("Get meeting fast!", style: Theme.of(context).textTheme.bodyLarge),
       ],
