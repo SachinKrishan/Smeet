@@ -20,6 +20,8 @@ Smeet is a powerful cross-platform mobile application built using Flutter, desig
 2. Connect MongoDB to your backend.
 3. Launch Smeet and experience a new era of meeting management!
 
+## **Screenshots:**
+
 <div align="center">
   <table>
     <tr>
