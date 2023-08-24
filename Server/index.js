@@ -5,7 +5,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 
 const mongoose = require('mongoose')
-mongoose.connect("mongodb+srv://sthyahar:smeetdb@cluster0.7jtmlh9.mongodb.net/smeetdb")
+mongoose.connect("mongodb+srv://<username>:<password>@cluster0.7jtmlh9.mongodb.net/smeetdb")
 
 
 app.use(cors())
