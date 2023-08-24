@@ -55,6 +55,9 @@ class LoginFormState extends State<LoginForm> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('userName', responseBody["user"]["name"]);
 
+        // print("shared prefs");
+        // print(await prefs.getString('userName'));
+
         Navigator.push(context, new MaterialPageRoute(builder: (context) => HomeScreen()));
       } else {
         // Login failed, handle the error

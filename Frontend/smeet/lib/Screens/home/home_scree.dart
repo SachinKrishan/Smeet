@@ -171,9 +171,14 @@ class HomeScreenState extends State<HomeScreen> {
 // Add more groups here
   ];
 
+  Future<String> getStoredUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userName') ?? "";
+  }
 
   Future<List<dynamic>> getMeetings(BuildContext context) async {
-    String searchTerm = "Sachin Krishan";
+    String? searchTerm = await getStoredUserName();
+    //String searchTerm = "Sachin Krishan";
     //print(searchTerm);
     String encodedSearchTerm = Uri.encodeQueryComponent(searchTerm);
 

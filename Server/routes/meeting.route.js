@@ -76,6 +76,7 @@ router.post('/getAvailability', async (req, res) => {
             timeBlocks = [defaultblock]
             for (const meet of meetings){
                 block = [meet.fromTime, meet.toTime];
+                console.log(block);
                 timeBlock = availability.timeBlockToSeconds(block);
                 timeBlocks = availability.splitBlock(timeBlocks, timeBlock)
             }

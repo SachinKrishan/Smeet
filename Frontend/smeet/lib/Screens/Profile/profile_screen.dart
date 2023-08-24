@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import '/Screens/createMeeting/create_form.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/Screens/bottom_navbar.dart';
 import 'package:smeet/Screens/login/login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  Future<void> removeStoredUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('userName');
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    await removeStoredUserName();
+    print('User name removed from SharedPreferences.');
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginScreen(setLoadingState: (){}, setAuthenticatedState: (){}, setUnauthenticatedState: (){})));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +45,7 @@ class ProfileScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => LoginScreen(setLoadingState: (){}, setAuthenticatedState: (){}, setUnauthenticatedState: (){})));
-
+                        signOut(context);
                       },
                       child: Text("SIGN OUT".toUpperCase()),
                     ),

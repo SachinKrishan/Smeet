@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'Authentication.dart';
 import 'package:smeet/Screens/login/login_screen.dart';
 
 import 'Screens/loading/loading_screen.dart';
-//import 'authentication_screen.dart';
 import 'Screens/home/home_scree.dart';
 
 
