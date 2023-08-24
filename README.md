@@ -20,10 +20,39 @@ Smeet is a powerful cross-platform mobile application built using Flutter, desig
 2. Connect MongoDB to your backend.
 3. Launch Smeet and experience a new era of meeting management!
 
-<img src="login.png" alt="Smeet App Screenshot" width="300" align="left">
-
-<img src="home.png" alt="Smeet App Screenshot" width="300" align="right">
-
-<img src="meetDetails.png" alt="Smeet App Screenshot" width="300" align="left">
-
-<img src="createMeet.png" alt="Smeet App Screenshot" width="300" align="right">
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <a href="login.png" target="_blank" rel="noopener noreferrer">
+          <img src="login.png" alt="Login Screenshot" width="300"/>
+        </a>
+      </td>
+      <td align="center">
+        <a href="home.png" target="_blank" rel="noopener noreferrer">
+          <img src="home.png" alt="Home Screenshot" width="300"/>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center"><b>Login screen</b></td>
+      <td align="center"><b>Home screen with personal meetings</b></td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="meetDetails.png" target="_blank" rel="noopener noreferrer">
+          <img src="meetDetails.png" alt="Meet Details Screenshot" width="300"/>
+        </a>
+      </td>
+      <td align="center">
+        <a href="createMeet.png" target="_blank" rel="noopener noreferrer">
+          <img src="createMeet.png" alt="Create Meet Screenshot" width="300"/>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center"><b>Meeting details displayed on tap of the meeting</b></td>
+      <td align="center"><b>Create meeting screen. Available blocks of time of all the selected participants shown</b></td>
+    </tr>
+  </table>
+</div>
